@@ -1,61 +1,52 @@
-import { useState, useEffect } from "react";
+import React from "react";
+import { Routes, Route } from "react-router-dom";
+import TodoApp from "./features/todos/TodoApp";
+import Login from "./features/auth/Login";
+import Signup from "./features/auth/Signup";
+import Activate from "./features/auth/Activate";
+import ResetPassword from "./features/settings/ResetPassword";
+import ResetPasswordConfirm from "./features/settings/ResetPasswordConfirm";
 import "./App.scss";
-import { library } from "@fortawesome/fontawesome-svg-core";
-import { fas } from "@fortawesome/free-solid-svg-icons";
-import Form from "./components/Form";
-import { CSSTransition, TransitionGroup } from "react-transition-group";
-import TodoItem from "./components/TodoItem";
+import { useLazyLoadUserQuery } from "./features/auth/authApiSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { setUser, selectCurrentToken } from "./features/auth/authSlice";
+import { useEffect } from "react";
+import { ToastContainer } from "react-toastify";
+import useTheme from "./features/settings/useTheme";
 
-library.add(fas);
+import "react-toastify/dist/ReactToastify.css";
+import classNames from "classnames";
 
 function App() {
-  const [todos, setTodos] = useState(() => {
-    return JSON.parse(localStorage.getItem("todos")) || [];
-  });
+  const dispatch = useDispatch();
+  const accessToken = useSelector(selectCurrentToken);
+  const [trigger] = useLazyLoadUserQuery();
+  const isDark = useTheme();
 
   useEffect(() => {
-    localStorage.setItem("todos", JSON.stringify(todos));
-  }, [todos]);
-
-  const onFormSubmit = (value) => {
-    const nextId = Math.max(...todos.map((t) => t.id), 0) + 1;
-    setTodos([...todos, { id: nextId, text: value, completed: false }]);
-  };
-
-  const onTodoChange = (e, id) => {
-    setTodos(
-      todos.map((t) => {
-        if (t.id !== id) {
-          return t;
-        }
-        const val =
-          e.target.type === "checkbox" ? e.target.checked : e.target.value;
-        return { ...t, [e.target.name]: val };
-      })
-    );
-  };
-
-  const onTodoDelete = (id) => {
-    setTodos(todos.filter((t) => t.id !== id));
-  };
+    async function getUsers() {
+      try {
+        const data = await trigger().unwrap();
+        dispatch(setUser(data));
+      } catch (err) {}
+    }
+    getUsers();
+  }, [accessToken, dispatch, trigger]);
 
   return (
-    <div className="App">
-      <div className="todo">
-        <h2 className="todo__title">Todo</h2>
-        <Form onSubmit={onFormSubmit} />
-        <TransitionGroup className="todo__list">
-          {todos.map((todo) => (
-            <CSSTransition timeout={300} key={todo.id} classNames="todo">
-              <TodoItem
-                todo={todo}
-                onChange={onTodoChange}
-                onDelete={onTodoDelete}
-              />
-            </CSSTransition>
-          ))}
-        </TransitionGroup>
-      </div>
+    <div className={classNames("App", "clearfix", { dark: isDark })}>
+      <ToastContainer hideProgressBar />
+      <Routes>
+        <Route path="/" element={<TodoApp />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/activate/:uid/:token" element={<Activate />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
+        <Route
+          path="/reset-password-confirm/:uid/:token"
+          element={<ResetPasswordConfirm />}
+        />
+      </Routes>
     </div>
   );
 }

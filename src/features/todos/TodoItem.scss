@@ -8,15 +8,6 @@
   gap: 20px;
   transition: all 0.2s;
 
-  &:first-child {
-    border-radius: 5px 5px 0 0;
-  }
-
-  &:last-child {
-    border-radius: 0 0 5px 5px;
-    border-bottom: 1px solid transparent;
-  }
-
   &__left {
     display: flex;
     align-items: center;
@@ -118,7 +109,7 @@
 
 .todo-enter {
   opacity: 0;
-  transform: translateX(-30px);
+  transform: translateY(-20px);
 }
 .todo-enter-active {
   opacity: 1;
@@ -130,6 +121,6 @@
 }
 .todo-exit-active {
   opacity: 0;
-  transition: all 0.25s ease-in;
+  transition: all 0.3s ease-in;
   transform: translateX(30px);
 }

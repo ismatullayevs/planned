@@ -12,7 +12,9 @@ body {
   font-size: 1rem;
   font-family: "Open Sans", sans-serif;
   font-weight: 400;
-  background: url("../public/images/bg-desktop-dark.jpg") #161722 no-repeat;
+  height: 100%;
+  color: rgba(0, 0, 0, 0.9);
+  background-color: rgb(241, 241, 241);
 }
 
 a {
@@ -35,4 +37,28 @@ button {
 
 input {
   font-family: inherit;
+}
+
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Old versions of Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}
+
+.clearfix {
+  overflow: auto;
+}
+
+.clearfix::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+.white {
+  color: white;
 }

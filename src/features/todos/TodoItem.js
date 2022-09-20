@@ -36,8 +36,8 @@ export default function TodoItem(props) {
             todo.completed ? "item__input--completed" : ""
           }`}
           type="text"
-          value={todo.text}
-          name="text"
+          value={todo.task}
+          name="task"
           onChange={(e) => props.onChange(e, todo.id)}
           onBlur={(e) => onBlur(e, todo.id)}
         />
