@@ -1,0 +1,14 @@
+@use "../abstracts/variables" as *;
+
+.todoApp {
+  max-width: 680px;
+  margin: 40px auto;
+  padding: 0 15px;
+
+  .todo__list {
+    margin-top: 45px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+}

@@ -3,11 +3,8 @@ import { library } from "@fortawesome/fontawesome-svg-core";
 import { fas } from "@fortawesome/free-solid-svg-icons";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { nanoid } from "nanoid";
-import Form from "./Form";
+import TodoForm from "./TodoForm";
 import TodoItem from "./TodoItem";
-import "./TodoApp.scss";
-import { Link } from "react-router-dom";
-import { logOut } from "../auth/authSlice";
 import { useDispatch } from "react-redux";
 import { selectCurrentUser } from "../auth/authSlice";
 import { useSelector } from "react-redux";
@@ -49,6 +46,7 @@ function TodoApp() {
     if (isAuthenticated) {
       getTodos();
     } else {
+      dispatch(setTodos(JSON.parse(localStorage.getItem("todos")) || []));
     }
   }, [dispatch, getTodos, isAuthenticated]);
 
@@ -61,7 +59,6 @@ function TodoApp() {
   }, [isAuthenticated, todos]);
 
   const onFormSubmit = async (value) => {
-    dispatch(addTodo({ id: nanoid(), task: value, completed: false }));
     if (isAuthenticated) {
       try {
         await createTodo(value).unwrap();
@@ -69,6 +66,8 @@ function TodoApp() {
       } catch (err) {
         console.log(err);
       }
+    } else {
+      dispatch(addTodo({ id: nanoid(), task: value, completed: false }));
     }
   };
 
@@ -97,42 +96,20 @@ function TodoApp() {
     }
   };
 
-  const handleLogout = () => {
-    dispatch(logOut());
-  };
-
   return (
-    <div className="TodoApp clearfix">
-      <div className="todo">
-        <h2 className="todo__title">Todo</h2>
-        <Form onSubmit={onFormSubmit} />
-        <TransitionGroup className="todo__list">
-          {todos.map((todo) => (
-            <CSSTransition timeout={300} key={todo.id} classNames="todo">
-              <TodoItem
-                todo={todo}
-                onChange={onTodoChange}
-                onDelete={onTodoDelete}
-              />
-            </CSSTransition>
-          ))}
-        </TransitionGroup>
-        <div className="todo__footer">
-          {isAuthenticated ? (
-            <p>
-              Hello, <span className="white">{user.email}</span>. Please don't{" "}
-              <button onClick={handleLogout} style={{ color: "white" }}>
-                logout
-              </button>
-            </p>
-          ) : (
-            <p>
-              To save your results, <Link to="/login">Log in</Link> or{" "}
-              <Link to="/signup">Sign up</Link>.
-            </p>
-          )}
-        </div>
-      </div>
+    <div className="todoApp">
+      <TodoForm onSubmit={onFormSubmit} />
+      <TransitionGroup className="todo__list todo__active">
+        {todos.map((todo) => (
+          <CSSTransition timeout={200} key={todo.id} classNames="todo">
+            <TodoItem
+              todo={todo}
+              onDelete={onTodoDelete}
+              onChange={onTodoChange}
+            />
+          </CSSTransition>
+        ))}
+      </TransitionGroup>
     </div>
   );
 }

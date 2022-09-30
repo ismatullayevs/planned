@@ -1,33 +1,31 @@
-import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
-import { selectTheme } from "./settingsSlice";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { selectTheme, setIsDark } from "./settingsSlice";
 
 const useTheme = () => {
+  const dispatch = useDispatch();
   const isSystemDark = () =>
     window.matchMedia("(prefers-color-scheme: dark)").matches;
   const theme = useSelector(selectTheme);
-  const [isDarkTheme, setIsDarkTheme] = useState(
-    theme === "light" ? false : theme === "dark" ? true : isSystemDark()
-  );
 
   useEffect(() => {
     localStorage.setItem("theme", theme);
 
-    setIsDarkTheme(
-      theme === "light" ? false : theme === "dark" ? true : isSystemDark()
+    dispatch(
+      setIsDark(
+        theme === "light" ? false : theme === "dark" ? true : isSystemDark()
+      )
     );
     const darkTheme = window.matchMedia("(prefers-color-scheme: dark)");
     const evtListener = (e) => {
       if (theme === "default") {
-        setIsDarkTheme(e.matches);
+        dispatch(setIsDark(e.matches));
       }
     };
     darkTheme.addEventListener("change", evtListener);
 
     return () => darkTheme.removeEventListener("change", evtListener);
-  }, [theme]);
-
-  return isDarkTheme;
+  }, [theme, dispatch]);
 };
 
 export default useTheme;

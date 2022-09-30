@@ -1,52 +1,53 @@
 import React from "react";
-import { Routes, Route } from "react-router-dom";
-import TodoApp from "./features/todos/TodoApp";
-import Login from "./features/auth/Login";
-import Signup from "./features/auth/Signup";
-import Activate from "./features/auth/Activate";
-import ResetPassword from "./features/settings/ResetPassword";
-import ResetPasswordConfirm from "./features/settings/ResetPasswordConfirm";
-import "./App.scss";
+import { Outlet } from "react-router-dom";
 import { useLazyLoadUserQuery } from "./features/auth/authApiSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser, selectCurrentToken } from "./features/auth/authSlice";
-import { useEffect } from "react";
+import { useEffect, useCallback } from "react";
 import { ToastContainer } from "react-toastify";
 import useTheme from "./features/settings/useTheme";
 
 import "react-toastify/dist/ReactToastify.css";
 import classNames from "classnames";
+import Navbar from "./components/Navbar";
+import { selectIsDark } from "./features/settings/settingsSlice";
 
 function App() {
   const dispatch = useDispatch();
   const accessToken = useSelector(selectCurrentToken);
   const [trigger] = useLazyLoadUserQuery();
-  const isDark = useTheme();
+  useTheme();
+  const isDark = useSelector(selectIsDark);
 
   useEffect(() => {
-    async function getUsers() {
-      try {
-        const data = await trigger().unwrap();
-        dispatch(setUser(data));
-      } catch (err) {}
+    if (isDark) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
     }
-    getUsers();
-  }, [accessToken, dispatch, trigger]);
+  }, [isDark]);
+
+  const getUser = useCallback(async () => {
+    try {
+      const data = await trigger().unwrap();
+      dispatch(setUser(data));
+    } catch (err) {
+      if (err?.status !== 403) {
+        console.log(err);
+      }
+    }
+  }, [dispatch, trigger]);
+
+  useEffect(() => {
+    getUser();
+  }, [getUser, accessToken]);
 
   return (
-    <div className={classNames("App", "clearfix", { dark: isDark })}>
+    // TODO: Add accessibility
+    <div className={classNames("App", "clearfix")}>
+      <Navbar />
       <ToastContainer hideProgressBar />
-      <Routes>
-        <Route path="/" element={<TodoApp />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/activate/:uid/:token" element={<Activate />} />
-        <Route path="/reset-password" element={<ResetPassword />} />
-        <Route
-          path="/reset-password-confirm/:uid/:token"
-          element={<ResetPasswordConfirm />}
-        />
-      </Routes>
+      <Outlet />
     </div>
   );
 }

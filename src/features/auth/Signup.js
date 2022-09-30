@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRegisterMutation } from "./authApiSlice";
 import { Link } from "react-router-dom";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Formik, Form } from "formik";
+import TextInput from "../../components/TextInput";
 import * as Yup from "yup";
-import classNames from "classnames";
+import { GrGooglePlus } from "react-icons/gr";
 import useAuth from "./useAuth";
-import "./Signup.scss";
 
 const schema = Yup.object({
   email: Yup.string().email("Invalid email").required("This field is required"),
@@ -48,6 +48,7 @@ function Signup() {
         const values = Object.values(err.data);
         setFormMessage({ type: "error", value: values[0] });
       } else {
+        console.log(err);
         setFormMessage({
           type: "error",
           value: "Something went wrong. Please try again later.",
@@ -71,106 +72,43 @@ function Signup() {
   }
 
   return (
-    <div className="Signup">
-      <h3 className="form__header">Sign Up Form</h3>
-      <p className="form__title">Please fill out the sign up form</p>
-      {formMessage.value && (
-        <p className={`form__message ${formMessage.type}`}>
-          {formMessage.value}
-        </p>
-      )}
-      <Formik
-        initialValues={{ email: "", password: "", confirm_password: "" }}
-        validationSchema={schema}
-        onSubmit={(values, actions) => {
-          onSubmit(values, actions);
-        }}
-      >
-        {({ isSubmitting, handleChange, handleBlur, values, status }) => (
-          <Form className="form" noValidate autoComplete="off">
-            {status}
-            <div className="form__group">
-              <label htmlFor="email" className="form__label">
-                Email
-              </label>
-              <br />
-              <Field name="email">
-                {({ field, meta: { touched, error } }) => (
-                  <input
-                    type="email"
-                    placeholder="Your email address"
-                    className={classNames("form__input", {
-                      invalid: touched && error,
-                    })}
-                    {...field}
-                  />
-                )}
-              </Field>
-              <ErrorMessage
-                name="email"
-                component="p"
-                className="form__error"
-              />
-            </div>
-            <div className="form__group">
-              <label htmlFor="password" className="form__label">
-                Password
-              </label>
-              <br />
-              <Field name="password">
-                {({ field, meta: { touched, error } }) => (
-                  <input
-                    type="password"
-                    placeholder="Your password"
-                    className={classNames("form__input", {
-                      invalid: touched && error,
-                    })}
-                    {...field}
-                  />
-                )}
-              </Field>
-              <ErrorMessage
-                name="password"
-                component="p"
-                className="form__error"
-              />
-            </div>
-            <div className="form__group">
-              <label htmlFor="confirm_password" className="form__label">
-                Confirm Password
-              </label>
-              <br />
-              <Field name="confirm_password">
-                {({ field, meta: { touched, error } }) => (
-                  <input
-                    placeholder="Confirm password"
-                    type="password"
-                    className={classNames("form__input", {
-                      invalid: touched && error,
-                    })}
-                    {...field}
-                  />
-                )}
-              </Field>
-              <ErrorMessage
-                name="confirm_password"
-                component="p"
-                className="form__error"
-              />
-            </div>
-            <button
-              className="form__submit"
-              type="submit"
-              disabled={isSubmitting}
-            >
-              {isSubmitting ? "Submitting..." : "Submit"}
+    <div className="signup__container">
+      <div className="signup">
+        <h3 className="form__title">Signup form</h3>
+        {formMessage?.value ? (
+          <p className={`form__message ${formMessage.type}`}>
+            {formMessage.value}
+          </p>
+        ) : null}
+        <Formik
+          initialValues={{ email: "", password: "" }}
+          validationSchema={schema}
+          onSubmit={(values, actions) => {
+            onSubmit(values, actions);
+          }}
+        >
+          <Form className="form">
+            <TextInput label="Email" name="email" type="email" />
+            <TextInput label="Password" name="password" type="password" />
+            <TextInput
+              label="Confirm Password"
+              name="confirm_password"
+              type="password"
+            />
+
+            <button type="submit" className="form__submit">
+              Submit
+            </button>
+            <button className="form__submit google">
+              <GrGooglePlus />
+              Continue with Google
             </button>
           </Form>
-        )}
-      </Formik>
-      <p className="form__link">
-        Already have an account? <Link to="/login">Login</Link>
-      </p>
+        </Formik>
+        <p className="form__footer">
+          Not a member yet? <Link to="/signup">Sign up</Link>
+        </p>
+      </div>
     </div>
   );
 }

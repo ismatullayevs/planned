@@ -14,6 +14,7 @@ const baseQuery = fetchBaseQuery({
 
 const baseQueryWithReauth = async (args, api, extraOptions) => {
   let result = await baseQuery(args, api, extraOptions);
+  console.log(result);
 
   if (result?.error?.status === 403 || result?.error?.originalStatus === 403) {
     const refresh = localStorage.getItem("refresh");
@@ -25,6 +26,7 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
     if (refreshResult?.data) {
       api.dispatch(setToken(refreshResult.data.access));
       result = await baseQuery(args, api, extraOptions);
+      console.log(result);
     } else {
       api.dispatch(logOut());
     }

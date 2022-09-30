@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   theme: localStorage.getItem("theme") || "default",
+  isDark: null,
 };
 
 export const settingsSlice = createSlice({
@@ -11,11 +12,15 @@ export const settingsSlice = createSlice({
     setTheme: (state, action) => {
       state.theme = action.payload;
     },
+    setIsDark: (state, action) => {
+      state.isDark = action.payload;
+    },
   },
 });
 
-export const { setTheme } = settingsSlice.actions;
+export const { setTheme, setIsDark } = settingsSlice.actions;
 
 export const selectTheme = (state) => state.settings.theme;
+export const selectIsDark = (state) => state.settings.isDark;
 
 export default settingsSlice.reducer;

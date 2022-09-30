@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
-import "./Form.scss";
 
-export default function Form(props) {
+export default function TodoForm(props) {
   const [value, setValue] = useState(() => {
     return localStorage.getItem("currentTodo") || "";
   });
@@ -26,22 +25,22 @@ export default function Form(props) {
   };
 
   return (
-    <form className="Form" onSubmit={onSubmit}>
-      <button
-        className={`Form__submit ${value ? "Form__submit--active" : ""}`}
-        type="submit"
-      >
-        +
+    <form className="todo__form" onSubmit={onSubmit} autoComplete="off">
+      <div className="form__left">
+        <div className="form__circle"></div>
+        <input
+          className="form__input"
+          type="text"
+          placeholder="Add todo..."
+          value={value}
+          name="value"
+          ref={inputRef}
+          onChange={onChange}
+        />
+      </div>
+      <button className="form__submit" type="submit">
+        Add
       </button>
-      <input
-        className="Form__input"
-        type="text"
-        placeholder="Add todo..."
-        value={value}
-        name="value"
-        ref={inputRef}
-        onChange={onChange}
-      />
     </form>
   );
 }

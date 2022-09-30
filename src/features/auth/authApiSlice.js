@@ -4,28 +4,35 @@ export const authApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     loadUser: builder.query({
       query: () => ({
-        url: "/auth/users/me",
+        url: "/api/users/me/",
       }),
     }),
     login: builder.mutation({
       query: (credentials) => ({
         url: "/auth/jwt/create",
         method: "POST",
-        body: { ...credentials },
+        body: credentials,
       }),
     }),
     register: builder.mutation({
       query: (credentials) => ({
         url: "/auth/users/",
         method: "POST",
-        body: { ...credentials },
+        body: credentials,
       }),
     }),
     activate: builder.mutation({
       query: (credentials) => ({
         url: "/auth/users/activation/",
         method: "POST",
-        body: { ...credentials },
+        body: credentials,
+      }),
+    }),
+    updateUser: builder.mutation({
+      query: (credentials) => ({
+        url: "/api/users/me/",
+        method: "PUT",
+        body: credentials,
       }),
     }),
   }),
@@ -37,4 +44,5 @@ export const {
   useActivateMutation,
   useLazyLoadUserQuery,
   useLoadUserQuery,
+  useUpdateUserMutation,
 } = authApiSlice;

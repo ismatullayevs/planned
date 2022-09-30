@@ -1,0 +1,53 @@
+@use "../abstracts/variables" as *;
+
+.todo__form {
+  background-color: var(--color-content-background);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  gap: 10px;
+  margin-bottom: 40px;
+  border: 1px solid #dadada;
+
+  .form__left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    width: 100%;
+
+    .form__circle {
+      flex-shrink: 0;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 1px solid var(--color-primary-text);
+    }
+
+    .form__input {
+      width: 100%;
+      background-color: transparent;
+      border: none;
+      outline: none;
+      color: var(--color-text-1);
+      font-size: 15px;
+      padding: 5px;
+    }
+  }
+  .form__submit {
+    flex-shrink: 0;
+    background-color: var(--color-primary);
+    color: white;
+    padding: 6px 14px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: 500;
+  }
+}
+
+.dark {
+  .todo__form {
+    border: none;
+  }
+}

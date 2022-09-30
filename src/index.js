@@ -1,9 +1,16 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import "./index.css";
+import "./sass/main.scss";
 import App from "./App";
+import TodoApp from "./features/todos/TodoApp";
+import Login from "./features/auth/Login";
+import Signup from "./features/auth/Signup";
+import Activate from "./features/auth/Activate";
+import ResetPassword from "./features/settings/ResetPassword";
+import ResetPasswordConfirm from "./features/settings/ResetPasswordConfirm";
+
 import reportWebVitals from "./reportWebVitals";
-import { BrowserRouter as Router } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { store } from "./app/store";
 import { Provider } from "react-redux";
 
@@ -12,7 +19,19 @@ root.render(
   <React.StrictMode>
     <Provider store={store}>
       <Router>
-        <App />
+        <Routes>
+          <Route path="/" element={<App />}>
+            <Route index element={<TodoApp />} />
+            <Route path="login" element={<Login />} />
+            <Route path="signup" element={<Signup />} />
+            <Route path="activate/:uid/:token" element={<Activate />} />
+            <Route path="reset-password" element={<ResetPassword />} />
+            <Route
+              path="reest-password/:uid/:token"
+              element={<ResetPasswordConfirm />}
+            />
+          </Route>
+        </Routes>
       </Router>
     </Provider>
   </React.StrictMode>
