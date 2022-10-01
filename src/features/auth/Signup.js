@@ -5,8 +5,8 @@ import { Link } from "react-router-dom";
 import { Formik, Form } from "formik";
 import TextInput from "../../components/TextInput";
 import * as Yup from "yup";
-import { GrGooglePlus } from "react-icons/gr";
 import useAuth from "./useAuth";
+import GoogleAuth from "../../components/GoogleAuth";
 
 const schema = Yup.object({
   email: Yup.string().email("Invalid email").required("This field is required"),
@@ -95,18 +95,14 @@ function Signup() {
               name="confirm_password"
               type="password"
             />
-
             <button type="submit" className="form__submit">
               Submit
             </button>
-            <button className="form__submit google">
-              <GrGooglePlus />
-              Continue with Google
-            </button>
+            <GoogleAuth />
           </Form>
         </Formik>
         <p className="form__footer">
-          Not a member yet? <Link to="/signup">Sign up</Link>
+          Not a member yet? <Link to="/login">Login</Link>
         </p>
       </div>
     </div>

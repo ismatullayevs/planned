@@ -8,7 +8,7 @@ import useAuth from "./useAuth";
 import TextInput from "../../components/TextInput";
 import { setTodos } from "../todos/todosSlice";
 import useLogin from "./useLogin";
-import { GrGooglePlus } from "react-icons/gr";
+import GoogleAuth from "../../components/GoogleAuth";
 
 const schema = Yup.object({
   email: Yup.string().email("Invalid email").required("This field is required"),
@@ -75,10 +75,7 @@ function Login() {
             <button type="submit" className="form__submit">
               Submit
             </button>
-            <button className="form__submit google">
-              <GrGooglePlus />
-              Continue with Google
-            </button>
+            <GoogleAuth />
           </Form>
         </Formik>
         <p className="form__footer">
