@@ -6,6 +6,8 @@
   justify-content: space-between;
   padding: 7px 15px;
   gap: 10px;
+  position: relative;
+  margin-bottom: 4px;
 
   &:first-child {
     border-top-left-radius: 10px;
@@ -15,6 +17,47 @@
   &:last-child {
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
+  }
+
+  &.completed {
+    .item__completed {
+      background-color: var(--color-primary-text);
+      color: white;
+
+      .checked__icon {
+        color: var(--color-content-background);
+        opacity: 1;
+      }
+    }
+    .item__input {
+      color: var(--color-text-2);
+      text-decoration: line-through;
+    }
+  }
+  &:hover {
+    background-color: var(--color-content-background-hover);
+
+    .drag__icon {
+      opacity: 1;
+    }
+  }
+
+  .drag__icon {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translateX(-100%);
+    padding: 8px;
+    bottom: 0;
+    color: var(--color-text-3);
+    opacity: 0;
+    transition: opacity 0.2s, visibility 0.2s;
+
+    svg {
+      font-size: 25px;
+      width: 100%;
+      height: 100%;
+    }
   }
 
   &__left {
@@ -52,6 +95,12 @@
         transition: 0.1s;
         font-size: 20px;
       }
+
+      &:hover {
+        .checked__icon {
+          opacity: 1;
+        }
+      }
     }
 
     .item__input {
@@ -77,22 +126,6 @@
 
     &:hover {
       color: var(--color-danger-text);
-    }
-  }
-
-  &.completed {
-    .item__completed {
-      background-color: var(--color-primary-text);
-      color: white;
-
-      .checked__icon {
-        color: var(--color-content-background);
-        opacity: 1;
-      }
-    }
-    .item__input {
-      color: var(--color-text-2);
-      text-decoration: line-through;
     }
   }
 }
@@ -121,13 +154,13 @@
   transform: translateY(20px);
 }
 
-@media (min-width: 500px) {
+.touchscreen {
   .item:hover {
-    background-color: var(--color-content-background-hover);
+    background-color: var(--color-content-background);
   }
-  .item__completed:hover {
+  .item:not(.completed) .item__completed:hover {
     .checked__icon {
-      opacity: 1;
+      opacity: 0;
     }
   }
 }

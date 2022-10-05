@@ -5,7 +5,6 @@ import { useDispatch } from "react-redux";
 import { useUpdateUserMutation } from "../features/auth/authApiSlice";
 import { CSSTransition } from "react-transition-group";
 import { AiOutlineCamera } from "react-icons/ai";
-import { toast } from "react-toastify";
 
 function Profile({ user, isOpen }) {
   const dispatch = useDispatch();
@@ -55,7 +54,7 @@ function Profile({ user, isOpen }) {
         </label>
         <div className="profile__content">
           <h4 className="profile__email">{user.email}</h4>
-          <Link to="/" className="profile__link">
+          <Link to="/change-password" className="profile__link">
             Change password
           </Link>
           <button className="profile__link" onClick={handleLogout}>

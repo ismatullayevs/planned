@@ -32,10 +32,11 @@ export const todosApiSlice = apiSlice.injectEndpoints({
         method: "DELETE",
       }),
     }),
-    clearCompleted: builder.mutation({
-      query: () => ({
-        url: "/api/todos/clear-completed/",
-        method: "DELETE",
+    reorderTodo: builder.mutation({
+      query: ({ direction, count, current_id }) => ({
+        url: `/api/todos/${current_id}/reorder/`,
+        method: "PATCH",
+        params: { direction, count },
       }),
     }),
   }),
@@ -48,5 +49,5 @@ export const {
   useCreateTodoMutation,
   useUpdateTodoMutation,
   useDestroyTodoMutation,
-  useClearCompletedMutation,
+  useReorderTodoMutation,
 } = todosApiSlice;

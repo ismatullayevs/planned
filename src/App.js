@@ -6,6 +6,7 @@ import { setUser, selectCurrentToken } from "./features/auth/authSlice";
 import { useEffect, useCallback } from "react";
 import { ToastContainer } from "react-toastify";
 import useTheme from "./features/settings/useTheme";
+import checkTouchDevice from "./helpers/checkTouchDevice";
 
 import "react-toastify/dist/ReactToastify.css";
 import classNames from "classnames";
@@ -27,6 +28,10 @@ function App() {
     }
   }, [isDark]);
 
+  if (checkTouchDevice()) {
+    document.documentElement.classList.add("touchscreen");
+  }
+
   const getUser = useCallback(async () => {
     try {
       const data = await trigger().unwrap();
@@ -43,7 +48,6 @@ function App() {
   }, [getUser, accessToken]);
 
   return (
-    // TODO: Add accessibility
     <div className={classNames("App", "clearfix")}>
       <Navbar />
       <ToastContainer hideProgressBar />
@@ -53,3 +57,7 @@ function App() {
 }
 
 export default App;
+
+// TODO: Add accessibility (change fonts according to browser settings)
+// TODO: Use styled components
+// TODO: 404 page

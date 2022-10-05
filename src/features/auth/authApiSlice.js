@@ -9,7 +9,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
     }),
     login: builder.mutation({
       query: (body) => ({
-        url: "/auth/jwt/create",
+        url: "/auth/jwt/create/",
         method: "POST",
         body: body,
       }),
@@ -33,6 +33,27 @@ export const authApiSlice = apiSlice.injectEndpoints({
         url: "/api/users/me/",
         method: "PUT",
         body: body,
+      }),
+    }),
+    changePassword: builder.mutation({
+      query: ({ current_password, new_password }) => ({
+        url: "/auth/users/set_password/",
+        method: "POST",
+        body: { current_password, new_password },
+      }),
+    }),
+    resetPassword: builder.mutation({
+      query: ({ email }) => ({
+        url: "/auth/users/reset_password/",
+        method: "POST",
+        body: { email },
+      }),
+    }),
+    resetPasswordConfirm: builder.mutation({
+      query: ({ uid, token, new_password }) => ({
+        url: "/auth/users/reset_password_confirm/",
+        method: "POST",
+        body: { uid, token, new_password },
       }),
     }),
     loginWithGoogle: builder.query({
@@ -66,4 +87,7 @@ export const {
   useUpdateUserMutation,
   useLazyLoginWithGoogleQuery,
   useActivateWithGoogleMutation,
+  useChangePasswordMutation,
+  useResetPasswordMutation,
+  useResetPasswordConfirmMutation,
 } = authApiSlice;

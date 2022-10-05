@@ -8,6 +8,8 @@ import TodoItem from "./TodoItem";
 import { useDispatch } from "react-redux";
 import { selectCurrentUser } from "../auth/authSlice";
 import { useSelector } from "react-redux";
+import checkTouchDevice from "../../helpers/checkTouchDevice";
+
 import {
   selectTodos,
   setTodos,
@@ -20,7 +22,9 @@ import {
   useCreateTodoMutation,
   useUpdateTodoMutation,
   useDestroyTodoMutation,
+  useReorderTodoMutation,
 } from "./todosApiSlice";
+import { DragDropContext, Droppable } from "react-beautiful-dnd";
 
 library.add(fas);
 
@@ -32,6 +36,8 @@ function TodoApp() {
   const [destroyTodo] = useDestroyTodoMutation();
   const [updateTodo] = useUpdateTodoMutation();
   const dispatch = useDispatch();
+  const isTouchDevice = checkTouchDevice();
+  const [reorderTodo] = useReorderTodoMutation();
 
   const getTodos = useCallback(async () => {
     try {
@@ -45,6 +51,7 @@ function TodoApp() {
   useEffect(() => {
     if (isAuthenticated) {
       getTodos();
+      localStorage.removeItem("todos");
     } else {
       dispatch(setTodos(JSON.parse(localStorage.getItem("todos")) || []));
     }
@@ -96,20 +103,64 @@ function TodoApp() {
     }
   };
 
+  const handleDragEnd = async (result) => {
+    const { destination, source } = result;
+    if (!destination) {
+      return;
+    }
+    if (
+      destination.droppableId === source.droppableId &&
+      destination.index === source.index
+    ) {
+      return;
+    }
+    const newTodos = Array.from(todos);
+    const currentTodo = newTodos.splice(source.index, 1)[0];
+    const currentId = currentTodo.id;
+    newTodos.splice(destination.index, 0, currentTodo);
+    dispatch(setTodos(newTodos));
+
+    if (isAuthenticated) {
+      const count = source.index - destination.index;
+      const direction = count > 0 ? "up" : "down";
+      try {
+        await reorderTodo({
+          direction,
+          current_id: currentId,
+          count: Math.abs(count),
+        }).unwrap();
+        getTodos();
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  };
+
   return (
     <div className="todoApp">
       <TodoForm onSubmit={onFormSubmit} />
-      <TransitionGroup className="todo__list todo__active">
-        {todos.map((todo) => (
-          <CSSTransition timeout={200} key={todo.id} classNames="todo">
-            <TodoItem
-              todo={todo}
-              onDelete={onTodoDelete}
-              onChange={onTodoChange}
-            />
-          </CSSTransition>
-        ))}
-      </TransitionGroup>
+      <DragDropContext onDragEnd={handleDragEnd}>
+        <Droppable droppableId="droppable-1">
+          {(provided) => (
+            <div {...provided.droppableProps} ref={provided.innerRef}>
+              <TransitionGroup className="todo__list todo__active">
+                {todos.map((todo, index) => (
+                  <CSSTransition timeout={200} key={todo.id} classNames="todo">
+                    <TodoItem
+                      todo={todo}
+                      onDelete={onTodoDelete}
+                      onChange={onTodoChange}
+                      index={index}
+                      isTouchDevice={isTouchDevice}
+                    />
+                  </CSSTransition>
+                ))}
+              </TransitionGroup>
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
+      </DragDropContext>
     </div>
   );
 }

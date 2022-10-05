@@ -1,6 +1,7 @@
 @use "components/todoForm";
 @use "components/navbar";
 @use "components/todoItem";
+@use "components/textInput";
 
 @use "base/base";
 
@@ -8,6 +9,7 @@
 @use "pages/login";
 @use "pages/signup";
 @use "pages/todoApp";
+@use "pages/changePassword";
 
 @use "themes/default";
 @use "themes/dark";
