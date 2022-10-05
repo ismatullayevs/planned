@@ -1,10 +1,21 @@
 import React, { useState, useEffect, useRef } from "react";
+import { nanoid } from "nanoid";
+import { addTodo } from "./todosSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { selectCurrentUser } from "../auth/authSlice";
+import { useCreateTodoMutation } from "./todosApiSlice";
+import useGetTodos from "./useGetTodos";
 
 export default function TodoForm(props) {
   const [value, setValue] = useState(() => {
     return localStorage.getItem("currentTodo") || "";
   });
   const inputRef = useRef(true);
+  const dispatch = useDispatch();
+  const user = useSelector(selectCurrentUser);
+  const isAuthenticated = !!user?.id;
+  const [createTodo] = useCreateTodoMutation();
+  const getTodos = useGetTodos();
 
   useEffect(() => {
     inputRef.current.focus();
@@ -18,10 +29,21 @@ export default function TodoForm(props) {
     setValue(e.target.value);
   };
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
-    value !== "" && props.onSubmit(value);
+    if (value === "") return;
     setValue("");
+
+    if (isAuthenticated) {
+      try {
+        await createTodo(value).unwrap();
+        getTodos();
+      } catch (err) {
+        console.log(err);
+      }
+    } else {
+      dispatch(addTodo({ id: nanoid(), task: value, completed: false }));
+    }
   };
 
   return (

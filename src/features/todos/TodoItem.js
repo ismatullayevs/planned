@@ -3,27 +3,53 @@ import classNames from "classnames";
 import { BsTrash, BsCheck } from "react-icons/bs";
 import { HiSwitchVertical } from "react-icons/hi";
 import { Draggable } from "react-beautiful-dnd";
+import { useDispatch, useSelector } from "react-redux";
+import { changeTodo, deleteTodo } from "./todosSlice";
+import { selectCurrentUser } from "../auth/authSlice";
+import { useUpdateTodoMutation, useDestroyTodoMutation } from "./todosApiSlice";
+import useGetTodos from "./useGetTodos";
+import getStyle from "../../helpers/getStyle";
 
 export default function TodoItem(props) {
+  const user = useSelector(selectCurrentUser);
+  const isAuthenticated = !!user?.id;
   const todo = props.todo;
+  const dispatch = useDispatch();
+  const [updateTodo] = useUpdateTodoMutation();
+  const [destroyTodo] = useDestroyTodoMutation();
+  const getTodos = useGetTodos();
 
-  const onBlur = (e) => {
-    const id = todo.id;
-    if (e.target.value === "" && e.target.type === "text") {
-      props.onDelete(id);
+  const handleChange = async (e) => {
+    const val =
+      e.target.type === "checkbox" ? e.target.checked : e.target.value;
+    dispatch(changeTodo({ id: todo.id, [e.target.name]: val }));
+    if (isAuthenticated) {
+      try {
+        await updateTodo({ id: todo.id, [e.target.name]: val }).unwrap();
+      } catch (err) {
+        console.log(err);
+      }
     }
   };
 
-  function getStyle(style) {
-    if (style?.transform) {
-      const axisLockY = `translate(0px, ${style.transform.split(",").pop()}`;
-      return {
-        ...style,
-        transform: axisLockY,
-      };
+  const handleDelete = async () => {
+    dispatch(deleteTodo(todo.id));
+    if (isAuthenticated) {
+      try {
+        await destroyTodo(todo.id).unwrap();
+        getTodos();
+      } catch (err) {
+        console.log(err);
+      }
     }
-    return style;
-  }
+  };
+
+  const handleBlur = (e) => {
+    const id = todo.id;
+    if (e.target.value === "" && e.target.type === "text") {
+      handleDelete(id);
+    }
+  };
 
   return (
     <Draggable draggableId={String(todo.id)} index={props.index}>
@@ -50,7 +76,7 @@ export default function TodoItem(props) {
                   type="checkbox"
                   name="completed"
                   checked={todo.completed}
-                  onChange={(e) => props.onChange(e, todo.id)}
+                  onChange={handleChange}
                   tabIndex={-1}
                 />
                 <BsCheck className="checked__icon" />
@@ -60,16 +86,11 @@ export default function TodoItem(props) {
                 type="text"
                 name="task"
                 value={todo.task}
-                onChange={(e) => {
-                  props.onChange(e, todo.id);
-                }}
-                onBlur={onBlur}
+                onChange={handleChange}
+                onBlur={handleBlur}
               />
             </div>
-            <BsTrash
-              className="delete__icon"
-              onClick={() => props.onDelete(todo.id)}
-            />
+            <BsTrash className="delete__icon" onClick={handleDelete} />
           </div>
         );
       }}
