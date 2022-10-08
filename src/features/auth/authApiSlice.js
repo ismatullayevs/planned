@@ -4,12 +4,12 @@ export const authApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     loadUser: builder.query({
       query: () => ({
-        url: "/api/users/me/",
+        url: "/core/users/me/",
       }),
     }),
     login: builder.mutation({
       query: (body) => ({
-        url: "/auth/jwt/create/",
+        url: "/core/jwt/create/",
         method: "POST",
         body: body,
       }),
@@ -30,7 +30,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
     }),
     updateUser: builder.mutation({
       query: (body) => ({
-        url: "/api/users/me/",
+        url: "/core/users/me/",
         method: "PUT",
         body: body,
       }),

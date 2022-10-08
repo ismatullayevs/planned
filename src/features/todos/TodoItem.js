@@ -64,7 +64,7 @@ export default function TodoItem(props) {
             {...containerProps}
           >
             {props.isTouchDevice ? null : (
-              <button className="drag__icon" {...provided.dragHandleProps}>
+              <button className="drag__icon" {...provided.dragHandleProps} tabIndex="-1">
                 <HiSwitchVertical />
               </button>
             )}

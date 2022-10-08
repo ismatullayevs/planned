@@ -25,7 +25,7 @@ function Navbar() {
     <div className="navbar__container noselect">
       <nav className="navbar">
         <Link className="navbar__brand" to="/">
-          Todoist
+          Planned
         </Link>
         <ul className="navbar__items">
           <li
