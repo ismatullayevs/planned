@@ -1,7 +1,7 @@
 .item {
   background-color: var(--color-content-background);
   display: flex;
-  border: 1px solid #dadada;
+  border: 1px solid var(--color-border);
   align-items: center;
   justify-content: space-between;
   padding: 7px 15px;
@@ -64,6 +64,7 @@
         inset: 0;
         opacity: 0;
         cursor: pointer;
+        display: none;
       }
 
       .checked__icon {
@@ -130,12 +131,6 @@
   }
 }
 
-.dark {
-  .item {
-    border: none;
-  }
-}
-
 .todo-enter {
   opacity: 0;
   transform: translateY(-20px);
@@ -162,5 +157,8 @@
     .checked__icon {
       opacity: 0;
     }
+  }
+  .drag__icon {
+    display: none;
   }
 }

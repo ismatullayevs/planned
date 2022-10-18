@@ -9,7 +9,7 @@
   padding: 10px 16px;
   gap: 10px;
   margin-bottom: 40px;
-  border: 1px solid #dadada;
+  border: 1px solid var(--color-border);
 
   .form__left {
     display: flex;
@@ -33,6 +33,10 @@
       color: var(--color-text-1);
       font-size: 15px;
       padding: 5px;
+
+      &::placeholder {
+        color: var(--color-text-2);
+      }
     }
   }
   .form__submit {
@@ -43,11 +47,11 @@
     border-radius: 5px;
     font-size: 14px;
     font-weight: 500;
-  }
-}
+    transition: opacity 0.2s;
 
-.dark {
-  .todo__form {
-    border: none;
+    &:disabled {
+      opacity: 0.8;
+      cursor: initial;
+    }
   }
 }

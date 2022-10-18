@@ -15,14 +15,14 @@ export const todosSlice = createSlice({
       state.todos.push(action.payload);
     },
     changeTodo: (state, action) => {
-      const { id, ...todo } = action.payload;
+      const { uid, ...todo } = action.payload;
       state.todos = state.todos.map((t) => {
-        if (t.id !== id) return t;
+        if (t.uid !== uid) return t;
         return { ...t, ...todo };
       });
     },
     deleteTodo: (state, action) => {
-      state.todos = state.todos.filter((t) => t.id !== action.payload);
+      state.todos = state.todos.filter((t) => t.uid !== action.payload);
     },
   },
 });

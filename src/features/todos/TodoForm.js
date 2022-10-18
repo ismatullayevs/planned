@@ -34,7 +34,6 @@ export default function TodoForm(props) {
     if (value === "") return;
     let todo = { uid: nanoid(), task: value, completed: false };
     dispatch(addTodo(todo));
-    console.log(todo);
 
     if (isAuthenticated) {
       try {

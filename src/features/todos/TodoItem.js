@@ -32,7 +32,7 @@ export default function TodoItem(props) {
   const handleChange = async (e) => {
     const val =
       e.target.type === "checkbox" ? e.target.checked : e.target.value;
-    dispatch(changeTodo({ id: todo.id, [e.target.name]: val }));
+    dispatch(changeTodo({ uid: todo.uid, [e.target.name]: val }));
 
     if (isAuthenticated) {
       if (e.target.name === "task") handleDebouncedApiChange.current(e, val);
@@ -41,7 +41,7 @@ export default function TodoItem(props) {
   };
 
   const handleDelete = async () => {
-    dispatch(deleteTodo(todo.id));
+    dispatch(deleteTodo(todo.uid));
     if (isAuthenticated) {
       try {
         await destroyTodo(todo.id).unwrap();
@@ -61,7 +61,7 @@ export default function TodoItem(props) {
   };
 
   return (
-    <Draggable draggableId={String(todo.id)} index={props.index}>
+    <Draggable draggableId={todo.uid} index={props.index}>
       {(provided, snapshot) => {
         const containerProps = props.isTouchDevice && provided.dragHandleProps;
         return (
@@ -82,9 +82,9 @@ export default function TodoItem(props) {
               </button>
             )}
             <div className="item__left">
-              <label htmlFor={`todo-${todo.id}`} className="item__completed">
+              <label htmlFor={`todo-${todo.uid}`} className="item__completed">
                 <input
-                  id={`todo-${todo.id}`}
+                  id={`todo-${todo.uid}`}
                   className="item__checkbox"
                   type="checkbox"
                   name="completed"
