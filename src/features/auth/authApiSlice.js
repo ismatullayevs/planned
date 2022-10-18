@@ -9,7 +9,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
     }),
     login: builder.mutation({
       query: (body) => ({
-        url: "/core/jwt/create/",
+        url: "/auth/jwt/create/",
         method: "POST",
         body: body,
       }),

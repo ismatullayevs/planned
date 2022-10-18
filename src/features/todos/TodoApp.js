@@ -52,10 +52,8 @@ function TodoApp() {
 
     if (isAuthenticated) {
       let count = source.index - destination.index;
-      const direction = count > 0 ? "up" : "down";
-      count = Math.abs(count);
       try {
-        await reorderTodo({ direction, current_id, count }).unwrap();
+        await reorderTodo({ current_id, count }).unwrap();
         getTodos();
       } catch (err) {
         console.log(err);
@@ -72,7 +70,7 @@ function TodoApp() {
             <div {...provided.droppableProps} ref={provided.innerRef}>
               <TransitionGroup className="todo__list todo__active">
                 {todos.map((todo, index) => (
-                  <CSSTransition timeout={200} key={todo.id} classNames="todo">
+                  <CSSTransition timeout={200} key={todo.uid} classNames="todo">
                     <TodoItem
                       todo={todo}
                       index={index}

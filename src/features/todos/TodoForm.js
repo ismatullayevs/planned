@@ -32,18 +32,21 @@ export default function TodoForm(props) {
   const onSubmit = async (e) => {
     e.preventDefault();
     if (value === "") return;
-    setValue("");
+    let todo = { uid: nanoid(), task: value, completed: false };
+    dispatch(addTodo(todo));
+    console.log(todo);
 
     if (isAuthenticated) {
       try {
-        await createTodo(value).unwrap();
-        getTodos();
+        await createTodo(todo).unwrap();
+        console.log(todo);
       } catch (err) {
         console.log(err);
+      } finally {
+        getTodos();
       }
-    } else {
-      dispatch(addTodo({ id: nanoid(), task: value, completed: false }));
     }
+    setValue("");
   };
 
   return (

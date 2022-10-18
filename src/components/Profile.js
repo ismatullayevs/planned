@@ -6,13 +6,14 @@ import { useUpdateUserMutation } from "../features/auth/authApiSlice";
 import { CSSTransition } from "react-transition-group";
 import { AiOutlineCamera } from "react-icons/ai";
 
-function Profile({ user, isOpen }) {
+function Profile({ user, isOpen, close }) {
   const dispatch = useDispatch();
   const [updateUser] = useUpdateUserMutation();
   const nodeRef = useRef(null);
 
   const handleLogout = () => {
     dispatch(logOut());
+    close();
   };
 
   const onAvatarChange = async (e) => {
@@ -54,7 +55,7 @@ function Profile({ user, isOpen }) {
         </label>
         <div className="profile__content">
           <h4 className="profile__email">{user.email}</h4>
-          <Link to="/change-password" className="profile__link">
+          <Link to="/change-password" className="profile__link" onClick={close}>
             Change password
           </Link>
           <button className="profile__link" onClick={handleLogout}>

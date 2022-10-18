@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import classNames from "classnames";
 import { BsTrash, BsCheck } from "react-icons/bs";
 import { HiSwitchVertical } from "react-icons/hi";
@@ -9,6 +9,7 @@ import { selectCurrentUser } from "../auth/authSlice";
 import { useUpdateTodoMutation, useDestroyTodoMutation } from "./todosApiSlice";
 import useGetTodos from "./useGetTodos";
 import getStyle from "../../helpers/getStyle";
+import _ from "lodash";
 
 export default function TodoItem(props) {
   const user = useSelector(selectCurrentUser);
@@ -19,16 +20,23 @@ export default function TodoItem(props) {
   const [destroyTodo] = useDestroyTodoMutation();
   const getTodos = useGetTodos();
 
+  const handleApiChange = async (e, val) => {
+    try {
+      await updateTodo({ id: todo.id, [e.target.name]: val }).unwrap();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  let handleDebouncedApiChange = useRef(_.debounce(handleApiChange, 400));
+
   const handleChange = async (e) => {
     const val =
       e.target.type === "checkbox" ? e.target.checked : e.target.value;
     dispatch(changeTodo({ id: todo.id, [e.target.name]: val }));
+
     if (isAuthenticated) {
-      try {
-        await updateTodo({ id: todo.id, [e.target.name]: val }).unwrap();
-      } catch (err) {
-        console.log(err);
-      }
+      if (e.target.name === "task") handleDebouncedApiChange.current(e, val);
+      else handleApiChange(e, val);
     }
   };
 
@@ -37,9 +45,10 @@ export default function TodoItem(props) {
     if (isAuthenticated) {
       try {
         await destroyTodo(todo.id).unwrap();
-        getTodos();
       } catch (err) {
         console.log(err);
+      } finally {
+        getTodos();
       }
     }
   };
@@ -64,7 +73,11 @@ export default function TodoItem(props) {
             {...containerProps}
           >
             {props.isTouchDevice ? null : (
-              <button className="drag__icon" {...provided.dragHandleProps} tabIndex="-1">
+              <button
+                className="drag__icon"
+                {...provided.dragHandleProps}
+                tabIndex="-1"
+              >
                 <HiSwitchVertical />
               </button>
             )}

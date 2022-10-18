@@ -8,10 +8,10 @@ export const todosApiSlice = apiSlice.injectEndpoints({
       }),
     }),
     createTodo: builder.mutation({
-      query: (task) => ({
+      query: ({ uid, task }) => ({
         url: "/core/todos/",
         method: "POST",
-        body: { task },
+        body: { uid, task },
       }),
     }),
     loadTodo: builder.query({
@@ -20,10 +20,10 @@ export const todosApiSlice = apiSlice.injectEndpoints({
       }),
     }),
     updateTodo: builder.mutation({
-      query: ({ id, ...todo }) => ({
+      query: ({ id, task, completed }) => ({
         url: `/core/todos/${id}/`,
         method: "PATCH",
-        body: { ...todo },
+        body: { task, completed },
       }),
     }),
     destroyTodo: builder.mutation({
@@ -33,10 +33,10 @@ export const todosApiSlice = apiSlice.injectEndpoints({
       }),
     }),
     reorderTodo: builder.mutation({
-      query: ({ direction, count, current_id }) => ({
+      query: ({ count, current_id }) => ({
         url: `/core/todos/${current_id}/reorder/`,
         method: "PATCH",
-        params: { direction, count },
+        params: { count },
       }),
     }),
   }),

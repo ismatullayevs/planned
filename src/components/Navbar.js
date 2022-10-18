@@ -56,7 +56,11 @@ function Navbar() {
                   )}
                 </div>
               </div>
-              <Profile user={user} isOpen={isProfileOpen} />
+              <Profile
+                user={user}
+                isOpen={isProfileOpen}
+                close={() => setIsProfileOpen(false)}
+              />
             </li>
           ) : (
             <li className="navbar__item">
