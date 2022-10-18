@@ -63,7 +63,7 @@ export default function TodoForm(props) {
           onChange={onChange}
         />
       </div>
-      <button className="form__submit" type="submit">
+      <button className="form__submit" type="submit" disabled={!value}>
         Add
       </button>
     </form>

@@ -1,21 +1,21 @@
 @use "../abstracts/variables" as *;
 
 .dark {
-  --color-primary: var(--blue-700);
-  --color-primary-text: var(--blue-400);
-  --color-danger: var(--red-700);
-  --color-danger-text: var(--red-300);
-  --color-danger-background: var(--red-700);
-  --color-success: var(--green-800);
-  --color-success-text: var(--green-300);
-  --color-success-background: var(--green-900);
+  --color-primary: #{$blue-700};
+  --color-primary-text: #{$blue-400};
+  --color-danger: #{$red-700};
+  --color-danger-text: #{$red-300};
+  --color-danger-background: #{$red-700};
+  --color-success: #{$green-800};
+  --color-success-text: #{$green-300};
+  --color-success-background: #{$green-900};
 
   --color-background: #0f141c;
   --color-content-background: #19202d;
   --color-content-background-hover: #1c2534;
-  --color-text-1: var(--gray-300);
-  --color-text-2: var(--gray-400);
-  --color-text-3: var(--gray-500);
+  --color-text-1: #{$gray-300};
+  --color-text-2: #{$gray-400};
+  --color-text-3: #{$gray-500};
   --color-brand: #fff;
-  --color-link: var(--gray-300);
+  --color-link: #{$gray-300};
 }

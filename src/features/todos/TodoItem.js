@@ -8,7 +8,7 @@ import { changeTodo, deleteTodo } from "./todosSlice";
 import { selectCurrentUser } from "../auth/authSlice";
 import { useUpdateTodoMutation, useDestroyTodoMutation } from "./todosApiSlice";
 import useGetTodos from "./useGetTodos";
-import getStyle from "../../helpers/getStyle";
+import lockAxisY from "../../helpers/lockAxisY";
 import _ from "lodash";
 
 export default function TodoItem(props) {
@@ -69,7 +69,7 @@ export default function TodoItem(props) {
             className={classNames("item", { completed: todo.completed })}
             {...provided.draggableProps}
             ref={provided.innerRef}
-            style={getStyle(provided.draggableProps.style, snapshot)}
+            style={lockAxisY(provided.draggableProps.style, snapshot)}
             {...containerProps}
           >
             {props.isTouchDevice ? null : (

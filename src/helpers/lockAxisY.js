@@ -1,4 +1,4 @@
-export default function getStyle(style) {
+export default function lockAxisY(style) {
   if (style?.transform) {
     const axisLockY = `translate(0px, ${style.transform.split(",").pop()}`;
     return {
