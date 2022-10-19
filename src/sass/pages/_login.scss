@@ -76,11 +76,10 @@
 
       a {
         color: var(--color-primary-text);
-
-        &:hover {
-          text-decoration: underline;
-        }
       }
     }
+  }
+  a:hover {
+    text-decoration: underline;
   }
 }

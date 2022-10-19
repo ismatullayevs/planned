@@ -11,12 +11,16 @@
   --color-success-background: #{$green-900};
 
   --color-background: #0a1929;
-  --color-content-background: #0a1929;
-  --color-border: #182839;
-  --color-content-background-hover: #182839;
+  --color-content-background: #0c1f33;
+  --color-border: #10253b;
+  --color-content-background-hover: #253b52;
   --color-text-1: #{$gray-300};
   --color-text-2: #{$gray-400};
   --color-text-3: #{$gray-500};
   --color-brand: #fff;
   --color-link: #{$gray-300};
+
+  &.touchscreen {
+    --color-border: #253b52;
+  }
 }
