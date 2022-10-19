@@ -2,7 +2,7 @@
 
 ### _Feature rich todo application_
 
-![Preview](https://i.ibb.co/YTQX8qY/Screenshot-from-2022-10-19-12-40-21.png)
+![Preview](/public/preview.png)
 
 Planned is a cloud-enabled, mobile-friendly, offline compatible,
 ReactJS-powered todo application.
