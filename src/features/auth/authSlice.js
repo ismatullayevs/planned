@@ -16,6 +16,7 @@ export const authSlice = createSlice({
       state.access = action.payload;
     },
     logOut: (state, action) => {
+      localStorage.removeItem("refresh");
       state.user = null;
       state.access = null;
     },
