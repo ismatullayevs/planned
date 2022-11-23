@@ -27,3 +27,5 @@ Planned uses a number of open source projects to work properly:
 - [react-beautiful-dnd](https://github.com/atlassian/react-beautiful-dnd) - Beautiful and accessible drag and drop for lists with React
 - [Django](https://www.djangoproject.com) - high-level Python web framework
 - [Django REST framework](https://www.django-rest-framework.org/) - A powerful and flexible toolkit for building Web APIs
+
+You can find the backend code [here](https://github.com/ismatullayevs/planned-api)
