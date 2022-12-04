@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { FiLogIn } from "react-icons/fi";
-import { BsMoonStars, BsSun } from "react-icons/bs";
+import { BsMoonStars, BsSun, BsGithub } from "react-icons/bs";
 import { selectCurrentUser } from "../features/auth/authSlice";
 import { useSelector } from "react-redux";
 import { selectIsDark } from "../features/settings/settingsSlice";
@@ -37,6 +37,14 @@ function Navbar() {
               {isDark ? <BsMoonStars /> : <BsSun />}
             </span>
             <Themes isOpen={isThemeOpen} />
+          </li>
+          <li className="navbar__item">
+            <a
+              href="https://github.com/ismatullayevs/planned"
+              className="navbar__icon"
+            >
+              <BsGithub />
+            </a>
           </li>
           {isAuthenticated ? (
             <li className="navbar__item" ref={profileRef}>
