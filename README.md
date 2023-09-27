@@ -1,4 +1,4 @@
-# [Planned](https://todo.rockyou.uz)
+# Planned
 
 ### _Feature rich todo application_
 
@@ -7,7 +7,7 @@
 Planned is a cloud-enabled, mobile-friendly, offline compatible,
 ReactJS-powered todo application.
 
-[Live Demo](https://todo.rockyou.uz)
+[Live Demo](https://ismatullayevs.github.io)
 
 ## Features
 
