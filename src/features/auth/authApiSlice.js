@@ -60,7 +60,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
       query: () => ({
         url: "/auth/o/google-oauth2/",
         method: "GET",
-        params: { redirect_uri: `${window.location.origin}/login` },
+        params: { redirect_uri: `${window.location.origin}/planned/login` },
         credentials: "include",
       }),
     }),

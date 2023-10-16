@@ -18,7 +18,7 @@ import { Provider } from "react-redux";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <Provider store={store}>
-    <Router>
+    <Router basename="/planned">
       <Routes>
         <Route path="/" element={<App />}>
           <Route index element={<TodoApp />} />
