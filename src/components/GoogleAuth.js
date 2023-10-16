@@ -22,8 +22,6 @@ function GoogleAuth() {
           state,
           code,
         }).unwrap();
-        console.log(state)
-        console.log(refresh)
         localStorage.setItem("refresh", refresh);
         dispatch(setToken(access));
       } catch (err) {
