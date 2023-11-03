@@ -7,7 +7,7 @@
 Planned is a cloud-enabled, mobile-friendly, offline compatible,
 ReactJS-powered todo application.
 
-[Live Demo](https://ismatullayevs.github.io/planned)
+[Live Demo](https://planned.javohir.me)
 
 ## Features
 

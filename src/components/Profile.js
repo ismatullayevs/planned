@@ -21,7 +21,6 @@ function Profile({ user, isOpen, close }) {
     data.append("avatar", e.target.files[0]);
     try {
       const response = await updateUser(data).unwrap();
-      console.log(response);
       dispatch(setUser(response));
     } catch (err) {
       console.log(err);

@@ -18,7 +18,7 @@ import { Provider } from "react-redux";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <Provider store={store}>
-    <Router basename="/planned">
+    <Router>
       <Routes>
         <Route path="/" element={<App />}>
           <Route index element={<TodoApp />} />
@@ -27,7 +27,7 @@ root.render(
           <Route path="activate/:uid/:token" element={<Activate />} />
           <Route path="reset-password" element={<ResetPassword />} />
           <Route
-            path="reest-password/:uid/:token"
+            path="reset-password/:uid/:token"
             element={<ResetPasswordConfirm />}
           />
           <Route path="change-password/" element={<ChangePassword />} />

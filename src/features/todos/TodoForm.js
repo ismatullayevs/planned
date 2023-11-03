@@ -38,7 +38,6 @@ export default function TodoForm(props) {
     if (isAuthenticated) {
       try {
         await createTodo(todo).unwrap();
-        console.log(todo);
       } catch (err) {
         console.log(err);
       } finally {

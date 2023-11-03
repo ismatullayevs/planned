@@ -11,7 +11,6 @@ function Activate() {
   useEffect(() => {
     async function activateUser() {
       try {
-        console.log("sending...");
         activate(tokens).unwrap();
         toast.info(
           "You account has been activated. You can login to your account."
